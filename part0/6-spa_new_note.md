@@ -1,32 +1,8 @@
-```mermaid
-sequenceDiagram
-    participant browser
-    participant server
 
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
-    activate server
-    server-->>browser: sends data to server then URL redirects
-    deactivate server
+1. user saves new note which performs a POST request to https://studies.cs.helsinki.fi/exampleapp/new_note_spa
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/new_note
-    activate server
-    server-->>browser: HTML document
-    deactivate server
+2. spa.js contains code that prevents page reload on form submission using .preventDefault()
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
-    activate server
-    server-->>browser: the css file
-    deactivate server
+3. pushes new note onto notes array then calls the function redrawNotes() to re-create note elements on page along with the new note 
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
-    activate server
-    server-->>browser: the JavaScript file
-    deactivate server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
-    deactivate server
-
-    Note right of browser: The browser executes the callback function that renders the notes
-```
+4. note is sent to the server using sendToServer(note)
