@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Total = (props) => {
     const total = props.exercises.reduce((partialSum, n) => partialSum + n, 0);
 
