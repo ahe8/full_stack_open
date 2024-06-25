@@ -21,17 +21,34 @@ const App = () => {
     setPoints(copy);
   }
 
-  const generateAnecdote = () => {
-    setSelected(Math.floor(Math.random() * anecdotes.length));
+  const generateAnecdote = () => setSelected(Math.floor(Math.random() * anecdotes.length));
+  
+  const getIndexOfAnecdoteWithMostVotes = () => {
+    let indexWithMostVotes = 0;
+    for(let i = 1; i < points.length; i++) {
+      if(points[i] > points[indexWithMostVotes]) {
+        indexWithMostVotes = i;
+      }
+    }
+    return indexWithMostVotes;
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
 
       <button onClick={voteForAnecdote}>vote</button>
       <button onClick={generateAnecdote}>next anecdote</button>
+
+      {points[getIndexOfAnecdoteWithMostVotes()] > 0 && 
+      <>
+        <h1>Anecdote with most votes</h1>
+        <p>{anecdotes[getIndexOfAnecdoteWithMostVotes()]}</p>
+        <p>has {points[getIndexOfAnecdoteWithMostVotes()]} votes</p>
+      </>
+      }
     </div>
   )
 }
