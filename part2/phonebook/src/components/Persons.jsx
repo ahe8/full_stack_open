@@ -1,13 +1,26 @@
+import personService from '../services/person'
+
 const Persons = (props) => {
-    const { filterCriteria, persons } = props;
+    const { filterCriteria, persons, setPersons } = props;
+
+    const handleDelete = (person) => {
+        if (window.confirm(`Delete ${person.name}?`)) {
+            personService.remove(person.id)
+            .then(res => setPersons(persons.filter(person => person.id !== res.id)))
+            .catch(err => console.log(err))
+          }
+    }
     
-    const personsArray = filterCriteria === '' ? (
-        persons.map((person) => <p key={person.name}>{person.name} {person.number}</p>)
-    ): (
-        persons
-        .filter((person) => person.name.toLowerCase().startsWith(filterCriteria))
-        .map((person) => <p key={person.name}>{person.name} {person.number}</p>)
-    );
+    const personsArray = 
+        persons.filter((person) => person.name.toLowerCase().startsWith(filterCriteria))
+        .map((person) => {
+            return(
+                <div key={person.id}>
+                    {person.name} {person.number}    
+                    <button onClick={() => handleDelete(person)}>delete</button>  
+                </div>
+            )
+        });
 
     return personsArray;
 }
