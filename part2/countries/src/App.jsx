@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import countryService from './services/countries'
-import Country from "./components/Country";
+import Country from "./components/Country"
 
 const App = () => {
   const [countryName, setCountryName] = useState('')
