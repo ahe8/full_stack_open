@@ -16,7 +16,7 @@ const Persons = (props) => {
     }
     
     const personsArray = 
-        persons.filter((person) => person.name.toLowerCase().startsWith(filterCriteria))
+        persons.filter((person) => person.name.toLowerCase().startsWith(filterCriteria.toLowerCase()))
         .map((person) => {
             return(
                 <div key={person.id}>
