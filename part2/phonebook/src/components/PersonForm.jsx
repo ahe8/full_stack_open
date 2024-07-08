@@ -20,7 +20,11 @@ const PersonForm = (props) => {
                     setNotificationMessage(`${newName}'s number has been updated to ${newNumber}`);
                     setNotificationType("success");
                 })
-                .catch(err => console.log(err))
+                .catch(error => {
+                    console.log(error);
+                    setNotificationMessage(error.response.data.error);
+                    setNotificationType("error");
+                });
             }
         } else {
             personService.create({name: newName, number: newNumber})
@@ -29,7 +33,11 @@ const PersonForm = (props) => {
                 setNotificationMessage(`Added ${newName}`);
                 setNotificationType("success");
             })
-            .catch(err => console.log(err));
+            .catch(error => {
+                console.log(error);
+                setNotificationMessage(error.response.data.error);
+                setNotificationType("error");
+            });
         }
       }
 

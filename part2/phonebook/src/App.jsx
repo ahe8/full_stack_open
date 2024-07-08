@@ -21,7 +21,7 @@ const App = () => {
     setTimeout(() => {
       setNotificationMessage('');
       setNotificationType('');
-    }, 3000);
+    }, 5000);
   }, [notificationMessage])
 
   const handleChange = (event, setFunction) => {
