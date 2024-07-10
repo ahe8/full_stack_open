@@ -151,26 +151,15 @@ describe('where there is initially some blogs saved', () => {
 
             const blogToBeUpdated = await Blog.find({ title: blogTitleToUpdate });
 
-            const previousTitle = blogToBeUpdated[0].title;
-            const previousUrl = blogToBeUpdated[0].url;
+            const idToBeUpdated = blogToBeUpdated[0].id;
 
             await api
-                .put(`/api/blogs/${blogToBeUpdated[0].id}`)
+                .put(`/api/blogs/${idToBeUpdated}`)
                 .send(updatedBlog)
                 .expect(200)
                 .expect('Content-Type', /application\/json/)
-
-            const oldTitleSearchResults = await Blog.find({ title: previousTitle })
-            const oldUrlSearchResults = await Blog.find({ url: previousUrl })
-            assert(oldTitleSearchResults.length === 0)
-            assert(oldUrlSearchResults.length === 0)
-
-            const newTitleSearchResults = await Blog.find({ title: updatedBlog.title })
-            const newUrlSearchResults = await Blog.find({ url: updatedBlog.url })
-            assert(newTitleSearchResults.length === 1)
-            assert(newUrlSearchResults.length === 1)
             
-            const response = await Blog.findById(blogToBeUpdated[0].id)
+            const response = await Blog.findById(idToBeUpdated)
             assert(response.title === updatedBlog.title)
             assert(response.url === updatedBlog.url)
         })
@@ -180,13 +169,17 @@ describe('where there is initially some blogs saved', () => {
         test('deleting a blog with an id that exists', async () => {
             const blogToDelete = await Blog.findOne();
 
+            const idToDelete = blogToDelete.id;
+
             await api
-            .delete(`/api/blogs/${blogToDelete.id}`)
+            .delete(`/api/blogs/${idToDelete}`)
             .expect(204)
 
             const blogsInDb = await helper.blogsInDb();
+            const response = await Blog.findById(idToDelete);
 
             assert(helper.initialBlogs.length, blogsInDb.length - 1)
+            assert(!response);
         })
 
         test('deleting a blog with an id that does not exist', async () => {
