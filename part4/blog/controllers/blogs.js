@@ -1,4 +1,6 @@
 const blogsRouter = require('express').Router()
+const middleware = require('../utils/middleware')
+
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
@@ -8,10 +10,14 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs);
 });
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const body = request.body;
 
-  const user = await User.findById(body.userId)
+  const userId = request.user;
+  if (!userId) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(userId)
 
   const blog = new Blog({
     title: body.title,
@@ -42,7 +48,20 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
+  const blogToDelete = await Blog.findById(request.params.id);
+
+  if (!blogToDelete) {
+    response.status(204).end()
+    return
+  }
+
+  const userId = request.user
+
+  if (blogToDelete.user.toString() !== userId) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
   await Blog.findByIdAndDelete(request.params.id)
 
   response.status(204).end()

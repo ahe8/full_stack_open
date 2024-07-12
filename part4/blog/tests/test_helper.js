@@ -1,6 +1,10 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
+const supertest = require('supertest')
+const app = require('../app')
+const api = supertest(app)
+
 const initialBlogs = [
     {
         title: "React patterns",
@@ -40,6 +44,11 @@ const initialBlogs = [
     }
 ]
 
+const initialUser = {
+    username: "testeraccount",
+    password: "password1234"
+}
+
 const nonExistingId = async () => {
     const blog = new Blog({ title: "temp", author: "temp", url: 'temp', likes: 0 })
     await blog.save()
@@ -59,6 +68,7 @@ const usersInDb = async () => {
 }
 
 module.exports = {
+    initialUser,
     initialBlogs,
     nonExistingId,
     blogsInDb,
