@@ -56,7 +56,18 @@ const App = () => {
       const updatedBlogs = blogs.map(blog => blog.id === likedBlog.id ? updatedBlog : blog)
       setBlogs(updatedBlogs)
     } catch(e){
-      console.log(e);
+      console.log(e)
+    }
+  }
+
+  const removeBlog = async(blogToRemove) => {
+    try {
+      if (window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)){
+        blogService.remove(blogToRemove.id)
+        setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id))
+      }
+    } catch(e) {
+      console.log(e)
     }
   }
 
@@ -77,7 +88,7 @@ const App = () => {
           {
             blogs
             .sort((a, b) => b.likes - a.likes)
-            .map(blog => <Blog key={blog.id} blog={blog} likeBlog={likeBlog} />)
+            .map(blog => <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} />)
           }
         </div>
       }

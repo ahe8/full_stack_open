@@ -34,7 +34,7 @@ const CreateBlogForm = (props) => {
             <form onSubmit={handleSubmit}>
                 <div>title:<input type="text" ref={titleRef}/></div>
                 <div>author:<input type="text" ref={authorRef}/></div>
-                <div>url:<input type="url" ref={urlRef}/></div>
+                <div>url:<input type="text" ref={urlRef}/></div>
                 <button type="submit">create</button>
             </form>
         </div>
