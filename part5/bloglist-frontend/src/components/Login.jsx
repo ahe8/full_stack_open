@@ -4,10 +4,10 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 
 const Login = (props) => {
-    const usernameRef = useRef("")
-    const passwordRef = useRef("")
+    const usernameRef = useRef('')
+    const passwordRef = useRef('')
 
-    const { setUser, createNotification } = props;
+    const { setUser, createNotification } = props
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -16,13 +16,13 @@ const Login = (props) => {
                 username: usernameRef.current.value,
                 password: passwordRef.current.value
             }
-            
-            const user = await loginService.login(credentials);
+
+            const user = await loginService.login(credentials)
 
             window.localStorage.setItem('loggedInUser', JSON.stringify(user))
-            
+
             setUser(user)
-            
+
             blogService.setToken(user.token)
         } catch (exception) {
             createNotification('error', 'wrong username or password')

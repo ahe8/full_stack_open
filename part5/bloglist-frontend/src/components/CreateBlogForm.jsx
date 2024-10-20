@@ -4,11 +4,11 @@ import blogService from '../services/blogs'
 
 const CreateBlogForm = (props) => {
     const { setBlogs, createNotification, blogFormRef } = props
-    
+
     const titleRef = useRef('')
     const authorRef = useRef('')
     const urlRef = useRef('')
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -20,11 +20,11 @@ const CreateBlogForm = (props) => {
         }
         try {
             const savedBlog = await blogService.create(newBlog)
-            setBlogs(blogs => [...blogs, savedBlog])   
+            setBlogs(blogs => [...blogs, savedBlog])
             blogFormRef.current.toggleVisibility()
             createNotification('success', `a new blog ${savedBlog.title} by ${savedBlog.author} added`)
         } catch(e) {
-            console.log(e);
+            console.log(e)
         }
     }
 

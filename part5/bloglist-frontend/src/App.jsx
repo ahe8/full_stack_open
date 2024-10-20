@@ -8,7 +8,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
   const [notificationType, setNotificationType] = useState()
   const [notificationMessage, setNotificationMessage] = useState()
 
@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll()
-    .then(blogs => setBlogs(blogs))  
+    .then(blogs => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const App = () => {
   return (
     <>
       {notificationMessage && <NotificationMessage type={notificationType} message={notificationMessage}/>}
-      {user === null ? 
+      {user === null ?
         <Login setUser={setUser} createNotification={createNotification}/> :
         <div>
           <h2>blogs</h2>
@@ -82,7 +82,7 @@ const App = () => {
           <br/>
 
           <Togglable buttonLabel='new blog' ref={blogFormRef}>
-            <CreateBlogForm setBlogs={setBlogs} createNotification={createNotification} blogFormRef={blogFormRef}/> 
+            <CreateBlogForm setBlogs={setBlogs} createNotification={createNotification} blogFormRef={blogFormRef}/>
           </Togglable>
 
           {
