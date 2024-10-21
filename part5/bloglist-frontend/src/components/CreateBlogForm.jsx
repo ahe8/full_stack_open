@@ -1,40 +1,30 @@
 import { useRef } from 'react'
-import blogService from '../services/blogs'
 
-
-const CreateBlogForm = (props) => {
-    const { setBlogs, createNotification, blogFormRef } = props
-
+const CreateBlogForm = ({ createBlog }) => {
     const titleRef = useRef('')
     const authorRef = useRef('')
     const urlRef = useRef('')
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const handleSubmit = (event) => {
+        event.preventDefault()
 
         const newBlog = {
             'title': titleRef.current.value,
             'author': authorRef.current.value,
             'url': urlRef.current.value
         }
-        try {
-            const savedBlog = await blogService.create(newBlog)
-            setBlogs(blogs => [...blogs, savedBlog])
-            blogFormRef.current.toggleVisibility()
-            createNotification('success', `a new blog ${savedBlog.title} by ${savedBlog.author} added`)
-        } catch(e) {
-            console.log(e)
-        }
+
+        createBlog(newBlog)
     }
 
     return (
         <div>
             <h2>create new</h2>
             <form onSubmit={handleSubmit}>
-                <div>title:<input type="text" ref={titleRef}/></div>
-                <div>author:<input type="text" ref={authorRef}/></div>
-                <div>url:<input type="text" ref={urlRef}/></div>
+                <div>title:<input type="text" ref={titleRef} name='title' /></div>
+                <div>author:<input type="text" ref={authorRef} name='author' /></div>
+                <div>url:<input type="text" ref={urlRef} name='url' /></div>
                 <button type="submit">create</button>
             </form>
         </div>

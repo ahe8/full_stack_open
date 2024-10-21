@@ -44,6 +44,17 @@ const App = () => {
     }, 5000)
   }
 
+  const createBlog = async (newBlog) => {
+    try {
+      const savedBlog = await blogService.create(newBlog)
+      setBlogs(blogs => [...blogs, savedBlog])
+      blogFormRef.current.toggleVisibility()
+      createNotification('success', `a new blog ${savedBlog.title} by ${savedBlog.author} added`)
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   const likeBlog = async (likedBlog) => {
     try {
       const blogObject = {
@@ -82,7 +93,7 @@ const App = () => {
           <br/>
 
           <Togglable buttonLabel='new blog' ref={blogFormRef}>
-            <CreateBlogForm setBlogs={setBlogs} createNotification={createNotification} blogFormRef={blogFormRef}/>
+            <CreateBlogForm createBlog={createBlog} />
           </Togglable>
 
           {
