@@ -22,9 +22,9 @@ const CreateBlogForm = ({ createBlog }) => {
         <div>
             <h2>create new</h2>
             <form onSubmit={handleSubmit}>
-                <div>title:<input type="text" ref={titleRef} name='title' /></div>
-                <div>author:<input type="text" ref={authorRef} name='author' /></div>
-                <div>url:<input type="text" ref={urlRef} name='url' /></div>
+                <div>title:<input type="text" ref={titleRef} name='title' data-testid='title'/></div>
+                <div>author:<input type="text" ref={authorRef} name='author' data-testid='author'/></div>
+                <div>url:<input type="text" ref={urlRef} name='url' data-testid='url'/></div>
                 <button type="submit">create</button>
             </form>
         </div>

@@ -34,8 +34,8 @@ const Login = (props) => {
             <h3>log in to application</h3>
 
             <form onSubmit={handleLogin}>
-                <div>username<input type="text" ref={usernameRef}/></div>
-                <div>password<input type="password" ref={passwordRef}/></div>
+                <div>username<input type="text" ref={usernameRef} data-testid='username'/></div>
+                <div>password<input type="password" ref={passwordRef} data-testid='password'/></div>
                 <button type="submit">login</button>
             </form>
         </div>
