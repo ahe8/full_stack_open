@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import About from './components/About'
+import Anecdote from './components/Anecdote'
 import AnecdoteList from './components/AnecdoteList'
 import CreateNew from './components/CreateNew'
 import Menu from './components/Menu'
@@ -53,6 +54,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />}/>
+        <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />}/>
         <Route path="/about/" element={<About />} />
         <Route path="/create" element={<CreateNew addNew={addNew}/>}/>
       </Routes>
