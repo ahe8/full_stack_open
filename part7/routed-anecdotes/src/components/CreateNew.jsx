@@ -11,17 +11,23 @@ const CreateNew = ({ setNotification, addNew }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         addNew({
-            content: content.value,
-            author: author.value,
-            info: info.value,
+            content: content.fields.value,
+            author: author.fields.value,
+            info: info.fields.value,
             votes: 0
         })
         navigate('/')
 
-        setNotification(`a new anecdote ${content.value} created!`)
+        setNotification(`a new anecdote ${content.fields.value} created!`)
         setTimeout(() => {
             setNotification('')
         }, 5000)
+    }
+
+    const resetFields = () => {
+        content.reset()
+        author.reset()
+        info.reset()
     }
 
     return (
@@ -30,17 +36,18 @@ const CreateNew = ({ setNotification, addNew }) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     content
-                    <input {...content} />
+                    <input {...content.fields} />
                 </div>
                 <div>
                     author
-                    <input {...author} />
+                    <input {...author.fields} />
                 </div>
                 <div>
                     url for more info
-                    <input {...info} />
+                    <input {...info.fields} />
                 </div>
                 <button>create</button>
+                <button type="button" onClick={resetFields}>reset</button>
             </form>
         </div>
     )
