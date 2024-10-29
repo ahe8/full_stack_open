@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/client'
 import { useState } from 'react'
-import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
+import { ALL_BOOKS, CREATE_BOOK, FIND_BOOKS_BY_GENRE, FIND_BOOKS_BY_FAVORITE_GENRE } from '../queries'
+import { updateCache } from '../App'
 
-const NewBook = (props) => {
+
+const NewBook = ({show, setError, filteredGenre, favoriteGenre}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -10,22 +12,17 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([])
 
   const [createBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS, variables: { genre: '' } }],
     update: (cache, response) => {
-      cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        return {
-          allBooks: allBooks.concat(response.data.addBook),
-        }
-      })
+      updateCache(cache, { query: ALL_BOOKS }, response.data.addBook)
+      updateCache(cache, { query: FIND_BOOKS_BY_GENRE, variables:{genre: filteredGenre} }, response.data.addBook)
+      updateCache(cache, { query: FIND_BOOKS_BY_FAVORITE_GENRE, variables:{genre: favoriteGenre} }, response.data.addBook)
     },
     onError: (error) => {
-      const messages = error.graphQLErrors.map(e => e.message).join('\n')
-      props.setMessage(messages)
+      setError(error.graphQLErrors[0].message)
     }
   })
 
-
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -34,11 +31,7 @@ const NewBook = (props) => {
 
     const res = await createBook({ variables: { title, published: Number(published), author, genres } })
 
-    console.log(res)
     if (res.data) {
-      console.log(res.data)
-      console.log('success')
-      props.setMessage(`added book ${title} by ${author}`)
       setTitle('')
       setPublished('')
       setAuthor('')
