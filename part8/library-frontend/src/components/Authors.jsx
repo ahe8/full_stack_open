@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useMutation, useQuery } from "@apollo/client"
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries"
 
-const Authors = (props) => {
+const Authors = ({show, token}) => {
   const results = useQuery(ALL_AUTHORS)
   const [editAuthor, result] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }]
@@ -14,7 +14,7 @@ const Authors = (props) => {
     }
   }, [result.data])
 
-  if (!props.show || results.loading) {
+  if (!show || results.loading) {
     return null
   }
 
@@ -50,16 +50,18 @@ const Authors = (props) => {
         </tbody>
       </table>
 
-      <div>
-        <h2>Set birthyear</h2>
-        <form onSubmit={handleSubmit}>
-          <select name="authors">
-            {authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)}
-          </select>
-          <div>born<input name='born' type='number' /></div>
-          <button>update author</button>
-        </form>
-      </div>
+      {token && 
+        <div>
+          <h2>Set birthyear</h2>
+          <form onSubmit={handleSubmit}>
+            <select name="authors">
+              {authors.map(author => <option key={author.id} value={author.name}>{author.name}</option>)}
+            </select>
+            <div>born<input name='born' type='number' /></div>
+            <button>update author</button>
+          </form>
+        </div>
+      }
     </div>
   )
 }

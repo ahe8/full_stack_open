@@ -57,7 +57,7 @@ const typeDefs = `
     allAuthors: [Author!]!,
     allBooks(author: String, genre: String): [Book!]!,
     findAuthor(name: String!): Author,
-    findBook(title: String!): Book,
+    findBook(title: String, genre: String): Book,
     me: User
   }
 
@@ -95,17 +95,31 @@ const resolvers = {
       return Author.find({})
     },
     allBooks: async (root, args) => {
-      return await Book.find({}).populate('author')
+      let query = {}
+      if (args.genre) {
+        query = { ...query, genres: args.genre }
+      }
+      if (args.author) {
+        query = { ...query, author: { $eq: args.author } }
+      }
+      return await Book.find(query).populate('author')
     },
     findAuthor: async (root, args) => {
       return await Author.find({ name: { $eq: args.name } })
     },
     findBook: async (root, args) => {
-      return await Book.find({ title: { $eq: args.title } }).populate('author')
+      let query = {}
+      if (args.title) {
+        query = { ...query, title: { $eq: args.title } }
+      }
+      if (args.genre) {
+        query = { ...query, genres: args.genre }
+      }
+      return await Book.find(query).populate('author')
     },
     me: (root, args, context) => {
       return context.currentUser
-    }
+    },
   },
   Author: {
     bookCount: async (root) => {
@@ -171,11 +185,11 @@ const resolvers = {
         })
       }
 
-      return await Author.findOneAndUpdate({name: {$eq: args.name} }, {born: args.setBornTo})
+      return await Author.findOneAndUpdate({ name: { $eq: args.name } }, { born: args.setBornTo })
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username })
-  
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
+
       return user.save()
         .catch(error => {
           throw new GraphQLError('Creating the user failed', {
@@ -189,23 +203,23 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
-  
-      if ( !user || args.password !== 'secret' ) {
+
+      if (!user || args.password !== 'secret') {
         throw new GraphQLError('wrong credentials', {
           extensions: {
             code: 'BAD_USER_INPUT'
           }
-        })        
+        })
       }
-  
+
       const userForToken = {
         username: user.username,
         id: user._id,
       }
-  
+
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
     },
-  
+
   }
 }
 
