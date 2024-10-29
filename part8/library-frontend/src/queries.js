@@ -26,11 +26,12 @@ query ($genre: String, $author: String) {
 `
 
 export const FIND_AUTHOR = gql`
-  query findPersonByName($nameToSearch: String!) {
-    findAuthor(name: $nameToSearch) {
+  query findAuthorByName($name: String!) {
+    findAuthor(name: $name) {
         name
         born
         bookCount
+        id
     }
   }
 `
@@ -61,7 +62,11 @@ export const CREATE_BOOK = gql`
     addBook(title: $title, published: $published, author: $author, genres: $genres) {
         title
         published
-        author
+        author {
+          name
+          born
+          bookCount
+        }
         genres
     }
   }

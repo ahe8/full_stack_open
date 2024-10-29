@@ -105,7 +105,8 @@ const resolvers = {
       return await Book.find(query).populate('author')
     },
     findAuthor: async (root, args) => {
-      return await Author.find({ name: { $eq: args.name } })
+      return await Author.findOne({ name: args.name }).exec()
+      
     },
     findBook: async (root, args) => {
       let query = {}

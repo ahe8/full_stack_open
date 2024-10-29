@@ -59,7 +59,7 @@ const App = () => {
 
       <Books show={page === "books"} />
 
-      <NewBook show={page === "add"} />
+      <NewBook show={page === "add"} setMessage={setMessage} setPage={setPage} />
 
       <Recommendations show={page === 'recommendations'} user={user}/>
 
