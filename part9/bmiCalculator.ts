@@ -21,7 +21,7 @@ const parseArguments = (args: string[]): bmiCalculationValues => {
 }
 
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
     const result = weight / Math.pow((height / 100), 2);
 
     if (result < 16.0) {
@@ -43,5 +43,8 @@ const calculateBmi = (height: number, weight: number): string => {
     };
 }
 
-const args = parseArguments(process.argv)
-console.log(calculateBmi(args.height, args.weight))
+
+if (require.main === module) {
+    const args = parseArguments(process.argv)
+    console.log(calculateBmi(args.height, args.weight))
+}
