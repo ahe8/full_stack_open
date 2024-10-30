@@ -1,4 +1,4 @@
-import { isNotNumber } from "./utils"
+import { isNotNumber } from "./utils";
 
 interface bmiCalculationValues {
     height: number;
@@ -14,37 +14,37 @@ const parseArguments = (args: string[]): bmiCalculationValues => {
         return {
             height: Number(args[2]),
             weight: Number(args[3])
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
-    }
-}
+    };
+};
 
 
 export const calculateBmi = (height: number, weight: number): string => {
     const result = weight / Math.pow((height / 100), 2);
 
     if (result < 16.0) {
-        return "Underweight (Severe thinness)"
+        return "Underweight (Severe thinness)";
     } else if (result < 16.9) {
-        return "Underweight (Moderate thinness)	"
+        return "Underweight (Moderate thinness)	";
     } else if (result < 18.4) {
-        return "Underweight (Mild thinness)"
+        return "Underweight (Mild thinness)";
     } else if (result < 24.9) {
-        return "Normal range"
+        return "Normal range";
     } else if (result < 29.9) {
-        return "Overweight (Pre-obese)"
+        return "Overweight (Pre-obese)";
     } else if (result < 34.9) {
-        return "Obese (Class I)"
+        return "Obese (Class I)";
     } else if (result < 39.9) {
-        return "Obese (Class II)"
+        return "Obese (Class II)";
     } else {
-        return "Obese (Class III)"
+        return "Obese (Class III)";
     };
-}
+};
 
 
 if (require.main === module) {
-    const args = parseArguments(process.argv)
-    console.log(calculateBmi(args.height, args.weight))
-}
+    const args = parseArguments(process.argv);
+    console.log(calculateBmi(args.height, args.weight));
+};

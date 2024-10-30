@@ -1,4 +1,4 @@
-import { isNotNumber } from "./utils"
+import { isNotNumber } from "./utils";
 
 interface Result {
     periodLength: number,
@@ -13,21 +13,21 @@ interface Result {
 const parseArguments = (args: string[]): number[] => {
     if (args.length < 4) throw new Error('Not enough arguments');
 
-    let parsedArgs: number[] = [];
+    const parsedArgs: number[] = [];
 
-    for(let i = 2; i < args.length; i++) {
+    for (let i = 2; i < args.length; i++) {
         if (!isNotNumber(args[i])) {
-            parsedArgs.push(Number(args[i]))
+            parsedArgs.push(Number(args[i]));
         } else {
             throw new Error('Provided values were not numbers!');
         }
     }
 
     return parsedArgs;
-}
+};
 
 
-const calculateExercises = (dailyExerciseHours: Array<number>, target: number): Result => {
+export const calculateExercises = (dailyExerciseHours: Array<number>, target: number): Result => {
     const periodLength = dailyExerciseHours.length;
     const trainingDays = dailyExerciseHours.filter(hours => hours > 0).length;
 
@@ -40,9 +40,11 @@ const calculateExercises = (dailyExerciseHours: Array<number>, target: number): 
         rating: 2,
         ratingDescription: 'not too bad but could be better',
         target,
-        average: average
-    }
-}
+        average: average || 0
+    };
+};
 
-const args = parseArguments(process.argv)
-console.log(calculateExercises(args.slice(0, args.length - 1), args[args.length - 1]))
+if (require.main === module) {
+    const args = parseArguments(process.argv);
+    console.log(calculateExercises(args.slice(0, args.length - 1), args[args.length - 1]));
+}
