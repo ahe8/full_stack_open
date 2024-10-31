@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Patient, PatientFormValues } from "../types";
+import { Patient, PatientFormValues, NonSensitivePatientInfo } from "../types";
 
 import { apiBaseUrl } from "../constants";
 
@@ -11,6 +11,22 @@ const getAll = async () => {
   return data;
 };
 
+
+const getNonSensitiveEntries = async () => {
+  const { data } = await axios.get<NonSensitivePatientInfo[]>(
+    `${apiBaseUrl}/patients`
+  );
+
+  return data.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    id,
+    name,
+    dateOfBirth,
+    gender,
+    occupation
+  }));
+};
+
+
 const create = async (object: PatientFormValues) => {
   const { data } = await axios.post<Patient>(
     `${apiBaseUrl}/patients`,
@@ -21,6 +37,6 @@ const create = async (object: PatientFormValues) => {
 };
 
 export default {
-  getAll, create
+  getAll, create, getNonSensitiveEntries
 };
 
