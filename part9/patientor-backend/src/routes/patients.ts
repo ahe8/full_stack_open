@@ -1,30 +1,40 @@
 import express, { Response } from 'express';
-import patientData from "../data/patients";
+import patientService from '../services/patientService';
 
-type Patient = {
-    name: string;
-    dateOfBirth: string;
-    gender: string;
-    ssn: string;
-    occupation: string;
-};
+import { NonSensitivePatientEntry } from '../types';
+import toNewPatientEntry from '../utils';
 
-type NonSensitivePatientInfo = Omit<Patient, "ssn">;
 
 const router = express.Router();
 
-router.get('/', (_req, res: Response<NonSensitivePatientInfo[]>) => {
-    res.send(patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-        id,
-        name,
-        dateOfBirth,
-        gender,
-        occupation
-    })));
+router.get('/', (_req, res: Response<NonSensitivePatientEntry[]>) => {
+    res.send(patientService.getNonSensitivePatientEntries());
 });
 
-router.post('/', (_req, res) => {
-    res.send('Saving a diagnoses!');
+router.get('/:id', (req, res) => {
+    const patient = patientService.findById(req.params.id);
+
+    if (patient) {
+        res.send(patient);
+    } else {
+        res.sendStatus(404);
+    }
+
+});
+
+router.post('/', (req, res) => {
+    try {
+        const newPatientEntry = toNewPatientEntry(req.body);
+
+        const addedPatient = patientService.addPatient(newPatientEntry);
+        res.json(addedPatient);
+    } catch (error: unknown) {
+        let errorMessage = 'Something went wrong.';
+        if (error instanceof Error) {
+            errorMessage += ' Error: ' + error.message;
+        }
+        res.status(400).send(errorMessage);
+    }
 });
 
 export default router;
