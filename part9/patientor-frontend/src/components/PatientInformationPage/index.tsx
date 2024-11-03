@@ -3,6 +3,8 @@ import patientService from "../../services/patients";
 import { useState, useEffect } from "react";
 import { Patient } from "../../types";
 
+import Entries from "./Entries";
+
 const PatientInformationPage = () => {
     const [patient, setPatient] = useState<Patient | null>();
 
@@ -30,6 +32,7 @@ const PatientInformationPage = () => {
             <p>gender: {patient.gender}</p>
             <p>ssn: {patient.ssn}</p>
             <p>occupation: {patient.occupation}</p>
+            <Entries entries={patient.entries} />
         </div>
 
     );
