@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import patientService from '../services/patientService';
 
-import { NewPatientEntry, NonSensitivePatientEntry, PatientEntry } from '../types';
+import { NewPatientEntry, NonSensitivePatientEntry, Patient } from '../types';
 import { NewPatientSchema } from '../utils';
 
 
@@ -41,7 +41,7 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
 };
 
 
-router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<PatientEntry>) => {
+router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<Patient>) => {
     const addedPatient = patientService.addPatient(req.body);
     res.json(addedPatient);
 });

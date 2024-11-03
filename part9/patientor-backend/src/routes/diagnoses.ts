@@ -1,16 +1,11 @@
 import express from 'express';
-import diagnosesData from "../data/diagnoses";
-
-type Diagnoses = {
-    name: string;
-    code: string;
-    latin?: string;
-};
+import diagnosesData from "../../data/diagnoses";
+import { Diagnosis } from '../types';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    const data: Diagnoses[] = diagnosesData;
+    const data: Diagnosis[] = diagnosesData;
     res.send(data);
 });
 
