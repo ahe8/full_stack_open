@@ -1,22 +1,23 @@
-import { useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import Login from "./components/Login";
-import CreateBlogForm from "./components/CreateBlogForm";
-import blogService from "./services/blogs";
-import NotificationMessage from "./components/NotificationMessage";
-import Togglable from "./components/Togglable";
-
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Routes, Route } from "react-router-dom";
+
+import Login from "./components/Login";
+import BlogList from "./components/BlogList";
+import UserInfo from "./components/UserInfo";
+
+import NotificationMessage from "./components/NotificationMessage";
+
+import blogService from "./services/blogs";
+
 import { createNotification } from "./reducers/notificationReducer";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { setUserAuthInfo, removeUserAuthInfo } from "./reducers/userReducer";
 
 const App = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blogs);
-  const user = useSelector((state) => state.user);
 
-  const blogFormRef = useRef();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -40,7 +41,7 @@ const App = () => {
     <>
       <NotificationMessage />
 
-      {user.token === '' ? (
+      {user.token === "" ? (
         <Login createNotification={createNotification} />
       ) : (
         <div>
@@ -50,15 +51,10 @@ const App = () => {
           </div>
           <br />
 
-          <Togglable buttonLabel="new blog" ref={blogFormRef}>
-            <CreateBlogForm />
-          </Togglable>
-
-          {[...blogs]
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog key={blog.id} user={user} blog={blog} />
-            ))}
+          <Routes>
+            <Route path="/users" element={<UserInfo />} />
+            <Route path="/" element={<BlogList user={user} />} />
+          </Routes>
         </div>
       )}
     </>
