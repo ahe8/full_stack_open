@@ -1,14 +1,22 @@
 import { useSelector } from "react-redux";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 import Togglable from "./Togglable";
 import CreateBlogForm from "./CreateBlogForm";
-import Blog from "./Blog";
 
 const BlogList = ({ user }) => {
   const blogs = useSelector((state) => state.blogs);
 
   const blogFormRef = useRef();
+
+  const blogListStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+  };
 
   return (
     <div>
@@ -19,7 +27,11 @@ const BlogList = ({ user }) => {
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog key={blog.id} user={user} blog={blog} />
+          <Link to={`/blogs/${blog.id}`} key={blog.id} >
+            <div style={blogListStyle}>
+              {blog.title} {blog.author}
+            </div>
+          </Link>
         ))}
     </div>
   );

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useMatch } from "react-router-dom";
 import usersService from "../../services/users";
 
-const UserInfo = () => {
+const UserDetails = () => {
   const [user, setUser] = useState({});
   const match = useMatch("/users/:id");
 
@@ -29,4 +29,4 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default UserDetails;
