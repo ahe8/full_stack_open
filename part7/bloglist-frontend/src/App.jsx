@@ -6,13 +6,16 @@ import blogService from "./services/blogs";
 import NotificationMessage from "./components/NotificationMessage";
 import Togglable from "./components/Togglable";
 
+import { useDispatch } from "react-redux";
+import { createNotification } from "./reducers/notificationReducer";
+
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [notificationType, setNotificationType] = useState();
-  const [notificationMessage, setNotificationMessage] = useState();
 
   const blogFormRef = useRef();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -34,26 +37,22 @@ const App = () => {
     blogService.setToken(null);
   };
 
-  const createNotification = (type, message) => {
-    setNotificationType(type);
-    setNotificationMessage(message);
-    setTimeout(() => {
-      setNotificationType(null);
-      setNotificationMessage(null);
-    }, 5000);
-  };
-
   const createBlog = async (newBlog) => {
     try {
       const savedBlog = await blogService.create(newBlog);
       setBlogs((blogs) => [...blogs, savedBlog]);
       blogFormRef.current.toggleVisibility();
-      createNotification(
-        "success",
-        `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
+
+      dispatch(
+        createNotification(
+          "success",
+          `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
+          5
+        )
       );
     } catch (err) {
       console.log(err);
+      dispatch(createNotification("error", err.response.data.error, 5));
     }
   };
 
@@ -67,7 +66,7 @@ const App = () => {
       };
       const updatedBlog = await blogService.update(likedBlog.id, blogObject);
       const updatedBlogs = blogs.map((blog) =>
-        blog.id === likedBlog.id ? updatedBlog : blog,
+        blog.id === likedBlog.id ? updatedBlog : blog
       );
       setBlogs(updatedBlogs);
     } catch (e) {
@@ -79,11 +78,18 @@ const App = () => {
     try {
       if (
         window.confirm(
-          `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`,
+          `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`
         )
       ) {
         blogService.remove(blogToRemove.id);
         setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id));
+        dispatch(
+          createNotification(
+            "success",
+            `${blogToRemove.title} by ${blogToRemove.author} removed`,
+            5
+          )
+        );
       }
     } catch (e) {
       console.log(e);
@@ -92,12 +98,8 @@ const App = () => {
 
   return (
     <>
-      {notificationMessage && (
-        <NotificationMessage
-          type={notificationType}
-          message={notificationMessage}
-        />
-      )}
+      <NotificationMessage />
+
       {user === null ? (
         <Login setUser={setUser} createNotification={createNotification} />
       ) : (

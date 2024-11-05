@@ -1,11 +1,16 @@
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const NotificationMessage = (props) => {
-  return props.message && <p className={props.type}>{props.message}</p>;
-};
+const NotificationMessage = () => {
+  const notification = useSelector((state) => state.notification);
 
-NotificationMessage.propTypes = {
-  types: PropTypes.oneOf(["success", "error"]),
+  return (
+    <div
+      className={notification.type}
+      style={{ display: notification.type ? "block" : "none" }}
+    >
+      {notification.message}
+    </div>
+  );
 };
 
 export default NotificationMessage;

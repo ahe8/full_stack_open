@@ -3,11 +3,16 @@ import { useRef } from "react";
 import loginService from "../services/login";
 import blogService from "../services/blogs";
 
+import { useDispatch } from "react-redux";
+import { createNotification } from "../reducers/notificationReducer";
+
 const Login = (props) => {
   const usernameRef = useRef("");
   const passwordRef = useRef("");
 
-  const { setUser, createNotification } = props;
+  const dispatch = useDispatch();
+
+  const { setUser } = props;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,8 +29,8 @@ const Login = (props) => {
       setUser(user);
 
       blogService.setToken(user.token);
-    } catch (exception) {
-      createNotification("error", "wrong username or password");
+    } catch (err) {
+      dispatch(createNotification("error", "Incorrect username or password", 5));
     }
   };
 
