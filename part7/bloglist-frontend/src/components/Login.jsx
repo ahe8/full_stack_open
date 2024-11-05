@@ -5,14 +5,13 @@ import blogService from "../services/blogs";
 
 import { useDispatch } from "react-redux";
 import { createNotification } from "../reducers/notificationReducer";
+import { setUserAuthInfo } from "../reducers/userReducer";
 
-const Login = (props) => {
+const Login = () => {
   const usernameRef = useRef("");
   const passwordRef = useRef("");
 
   const dispatch = useDispatch();
-
-  const { setUser } = props;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,11 +25,13 @@ const Login = (props) => {
 
       window.localStorage.setItem("loggedInUser", JSON.stringify(user));
 
-      setUser(user);
+      dispatch(setUserAuthInfo(user));
 
       blogService.setToken(user.token);
     } catch (err) {
-      dispatch(createNotification("error", "Incorrect username or password", 5));
+      dispatch(
+        createNotification("error", "Incorrect username or password", 5)
+      );
     }
   };
 
