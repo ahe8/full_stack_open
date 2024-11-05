@@ -45,9 +45,9 @@ const addEntry = (patient: Patient, entry: EntryWithoutId) => {
     const newEntry = {
         id,
         ...entry,
-        diagnosisCodes: parseDiagnosisCodes(entry.diagnosisCodes)
+        diagnosisCodes: parseDiagnosisCodes(entry)
     };
-
+    
     patient.entries.push(newEntry);
     return patient;
 };

@@ -50,7 +50,7 @@ interface OccupationalHealthcareEntry extends BaseEntry {
   employerName: string;
   sickLeave?: {
     startDate: string;
-    endDate: string;
+    endDate?: string;
   }
 }
 

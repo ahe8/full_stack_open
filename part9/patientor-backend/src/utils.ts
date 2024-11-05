@@ -1,4 +1,4 @@
-import { Entry, Gender, NewPatientEntry, Diagnosis, HealthCheckRating } from './types';
+import { Entry, Gender, NewPatientEntry, Diagnosis, HealthCheckRating, NewEntry } from './types';
 import { z } from 'zod';
 
 export const NewPatientSchema = z.object({
@@ -20,7 +20,7 @@ const NewEntryTypeDiscriminatorSchema = z.discriminatedUnion("type", [
         employerName: z.string(),
         sickLeave: z.object({
             startDate: z.string().date(),
-            endDate: z.string().date()
+            endDate: z.string().date().optional()
         }).optional()
     }),
     z.object({
@@ -43,7 +43,9 @@ export const NewEntrySchema = z.object({
     diagnosisCodes: z.array(z.custom<Diagnosis['code']>()).optional()
 }).and(NewEntryTypeDiscriminatorSchema);
 
-
+export const toNewEntry = (object: unknown): NewEntry => {
+    return NewEntrySchema.parse(object);
+};
 
 export const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> => {
     if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
