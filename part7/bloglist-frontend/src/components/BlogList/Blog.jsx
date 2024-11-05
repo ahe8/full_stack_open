@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { likeBlog, removeBlog } from "../reducers/blogReducer";
+import { likeBlog, removeBlog } from "../../reducers/blogReducer";
 
 const Blog = ({ blog, user }) => {
   const [visible, setVisible] = useState(false);

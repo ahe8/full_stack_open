@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { createBlog } from "../reducers/blogReducer";
-import { createNotification } from "../reducers/notificationReducer";
+import { createBlog } from "../../reducers/blogReducer";
+import { createNotification } from "../../reducers/notificationReducer";
 
 const CreateBlogForm = () => {
   const titleRef = useRef("");
