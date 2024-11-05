@@ -5,8 +5,13 @@ import { Patient } from "../../types";
 
 import Entries from "./Entries";
 
+import { Button, Alert } from "@mui/material";
+import AddEntryForm from "./AddEntryForm";
+
 const PatientInformationPage = () => {
     const [patient, setPatient] = useState<Patient | null>();
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const match = useMatch('/patients/:id');
 
@@ -32,6 +37,12 @@ const PatientInformationPage = () => {
             <p>gender: {patient.gender}</p>
             <p>ssn: {patient.ssn}</p>
             <p>occupation: {patient.occupation}</p>
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+            {
+                showForm
+                    ? <AddEntryForm setShowForm={setShowForm} patient={patient} setErrorMessage={setErrorMessage} setPatient={setPatient} />
+                    : <Button variant="contained" onClick={() => setShowForm(true)} >Add Entry</Button>
+            }
             <Entries entries={patient.entries} />
         </div>
 

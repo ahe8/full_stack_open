@@ -45,7 +45,7 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
   employerName: string;
   sickLeave?: {
     startDate: string;
-    endDate: string;
+    endDate?: string;
   }
 }
 
@@ -62,7 +62,13 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
-export type NonSensitivePatientInfo = Omit<Patient, 'ssd'>;
+export enum EntryType {
+  OccupationalHealthcare = 'OccupationalHealthcare',
+  Hospital = 'Hospital',
+  HealthCheck = 'HealthCheck'
+}
+
+export type NonSensitivePatientInfo = Omit<Patient, 'ssn'>;
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 

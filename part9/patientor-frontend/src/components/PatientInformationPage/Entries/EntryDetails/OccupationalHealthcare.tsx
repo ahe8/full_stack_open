@@ -23,7 +23,7 @@ const OccupationalHealthcare = (props: OccupationalHealthcareProps) => {
                     <ul style={{'padding':'0', 'listStyleType': 'none'}}>
                         <u>Sick Leave</u>
                         <li>Start Date - {entry.sickLeave.startDate}</li>
-                        <li>End Date - {entry.sickLeave.endDate}</li> 
+                        <li>End Date - {entry.sickLeave.endDate || "Unspecified"}</li> 
                     </ul>
                 </div>
             }

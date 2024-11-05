@@ -4,16 +4,12 @@ import OccupationalHealthcare from "./OccupationalHealthcare";
 import Hospital from "./Hopsital";
 import HealthCheck from "./HealthCheck";
 
+import { assertNever } from "../../../../utils";
+
 interface EntryProps {
     entry: Entry;
     diagnoses: Diagnosis[];
 }
-
-const assertNever = (value: never): never => {
-    throw new Error(
-        `Unhandled discriminated union member: ${JSON.stringify(value)}`
-    );
-};
 
 const EntryDetails = (props: EntryProps) => {
     const { entry, diagnoses } = props;
@@ -43,7 +39,7 @@ const EntryDetails = (props: EntryProps) => {
     return (
         <div style={entryStyle}>
             {entryDetails()}
-            {entry.diagnosisCodes &&
+            {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 &&
                 <>
                     <u>Diagnostic Codes</u>
                     <ul>
