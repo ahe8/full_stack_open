@@ -55,8 +55,7 @@ const App = () => {
       ) : (
         <div>
           <nav style={navbarStyle}>
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/blogs">blogs</Link>
+            <Link style={padding} to="/">blogs</Link>
             <Link style={padding} to="/users">users</Link>
             <span style={padding}>{user.name} logged in</span>
             <span><button onClick={handleLogout}>logout</button></span>
