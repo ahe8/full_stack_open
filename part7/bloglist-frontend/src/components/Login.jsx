@@ -7,7 +7,11 @@ import { useDispatch } from "react-redux";
 import { createNotification } from "../reducers/notificationReducer";
 import { setUserAuthInfo } from "../reducers/userReducer";
 
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const navigate = useNavigate();
+
   const usernameRef = useRef("");
   const passwordRef = useRef("");
 
@@ -28,6 +32,8 @@ const Login = () => {
       dispatch(setUserAuthInfo(user));
 
       blogService.setToken(user.token);
+
+      navigate("/");
     } catch (err) {
       dispatch(
         createNotification("error", "Incorrect username or password", 5)
