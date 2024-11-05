@@ -34,4 +34,6 @@ const remove = (id) => {
   return axios.delete(`${baseUrl}/${id}`, config);
 };
 
+
+
 export default { getAll, setToken, create, update, remove };

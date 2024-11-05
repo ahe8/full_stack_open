@@ -1,9 +1,14 @@
 import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
+import { createNotification } from "../reducers/notificationReducer";
 
-const CreateBlogForm = ({ createBlog }) => {
+const CreateBlogForm = () => {
   const titleRef = useRef("");
   const authorRef = useRef("");
   const urlRef = useRef("");
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -14,7 +19,17 @@ const CreateBlogForm = ({ createBlog }) => {
       url: urlRef.current.value,
     };
 
-    createBlog(newBlog);
+    const res = dispatch(createBlog(newBlog));
+
+    if (res) {
+      dispatch(
+        createNotification(
+          "success",
+          `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          5
+        )
+      );
+    }
   };
 
   return (
