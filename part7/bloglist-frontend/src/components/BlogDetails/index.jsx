@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { likeBlog, removeBlog } from "../../reducers/blogReducer";
+import {
+  likeBlog,
+  removeBlog,
+  addCommentToBlog,
+} from "../../reducers/blogReducer";
 
 const BlogDetails = () => {
   const [blog, setBlog] = useState({});
@@ -21,9 +25,16 @@ const BlogDetails = () => {
     return <div>loading...</div>;
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(addCommentToBlog(blog, event.target.comment.value));
+  };
+
   return (
     <div>
-      <h1>{blog.title} {blog.author}</h1>
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
 
       <a href={blog.url}>{blog.url}</a>
       <div>
@@ -37,6 +48,19 @@ const BlogDetails = () => {
       >
         remove
       </button>
+
+      <h2>comments</h2>
+
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="comment" />
+        <button>add comment</button>
+      </form>
+
+      <ul>
+        {blog?.comments.map((comment, idx) => (
+          <li key={`${blog.id}comment${idx}`}>{comment}</li>
+        ))}
+      </ul>
     </div>
   );
 };
