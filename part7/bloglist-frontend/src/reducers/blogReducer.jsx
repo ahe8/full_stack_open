@@ -65,11 +65,12 @@ export const addCommentToBlog = (blog, comment) => {
       title: blog.title,
       author: blog.author,
       likes: blog.likes,
-      comments: [...(blog?.comments || []), comment]
+      comments: [...(blog?.comments || []), comment],
     };
     const updatedBlog = await blogsService.update(blog.id, blogObj);
+
     dispatch(updateBlog({ id: blog.id, updatedBlog }));
   };
-}
+};
 
 export default blogSlice.reducer;

@@ -5,34 +5,41 @@ import { Link } from "react-router-dom";
 import Togglable from "./Togglable";
 import CreateBlogForm from "./CreateBlogForm";
 
-const BlogList = ({ user }) => {
+import { List, ListItemButton, ListItemText } from "@mui/material";
+
+const BlogList = () => {
   const blogs = useSelector((state) => state.blogs);
 
   const blogFormRef = useRef();
 
-  const blogListStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
   return (
     <div>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <h2>Blogs</h2>
+      <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
         <CreateBlogForm />
       </Togglable>
 
-      {[...blogs]
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Link to={`/blogs/${blog.id}`} key={blog.id} >
-            <div style={blogListStyle}>
-              {blog.title} {blog.author}
-            </div>
-          </Link>
-        ))}
+      <List
+        sx={{ width: "100%", bgcolor: "background.paper" }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+      >
+        {[...blogs]
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Link
+              to={`/blogs/${blog.id}`}
+              key={blog.id}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton>
+                <ListItemText
+                  primary={`${blog.title} - ${blog.author}`}
+                ></ListItemText>
+              </ListItemButton>
+            </Link>
+          ))}
+      </List>
     </div>
   );
 };
